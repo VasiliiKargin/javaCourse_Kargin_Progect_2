@@ -1,4 +1,4 @@
-public class Users implements  Verify{
+public class Users {
     private String login;
     private String password;
     private Roles role;
@@ -32,10 +32,5 @@ public class Users implements  Verify{
     public void setRole(Roles role) {
         this.role = role;
     }
-
-    @Override
-    public void execute() {
-
-    }
-
 }
+

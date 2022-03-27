@@ -1,10 +1,12 @@
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String login;
-        String password;
         boolean flagIn = false;
+        String search;
+        Note[] notes = new Note[5];
 
         Scanner scr = new Scanner(System.in);
 // Создаем пользователей
@@ -12,9 +14,10 @@ public class Main {
         Users user2 = new Users("MODERATOR", "456", Roles.MODERATOR);
         Users user3 = new Users("CLIENT", "789", Roles.CLIENT);
 // По дефолту создаем заметки
-        NoteType1 note1 = new NoteType1("Выложить фотку", "Фотка должна быть \"огонь\"", "Семен", 1, 500);
-        NoteType2 note2 = new NoteType2("Статья", "Птицы в среде обитания", "Степа", 2, "Написать статью");
-        NoteType3 note3 = new NoteType3("Наработки по проекту", "Проработать алгоритм выполнения действий", "Женя", 3, "+79008883355");
+        notes[0] = new NoteType1("Выложить фотку", "Фотка должна быть \"огонь\"", "Семен", 1, 500, "Тут должна быть ваша анатация");
+        notes[1] = new NoteType2("Статья", "Птицы в среде обитания", "Степа", 2, "8789465161");
+        notes[2] = new NoteType2("Наработки по проекту", "Проработать алгоритм выполнения действий", "Женя", 2, "+79008883355");
+
 
         Menus.MyMenu();
         int numMenu = scr.nextInt();
@@ -24,23 +27,43 @@ public class Main {
                     System.out.println("Вы уже авторизованы!");
                 } else {
                     while (!flagIn) {
-                        flagIn=LogInClass.authorization( new Users[]{user1, user2, user3});
+                        flagIn = LogInClass.authorization(new Users[]{user1, user2, user3});
                     }
                 }
             }
             if (numMenu == 2) {
-                flagIn=false;
-                while (!flagIn) {
-                    flagIn=LogInClass.authorization( new Users[]{user1, user2, user3});
+                if (!flagIn) {
+                    System.out.println("Вы еще не авторизовывались!");
+                } else {
+                    flagIn = false;
+                    while (!flagIn) {
+                        flagIn = LogInClass.authorization(new Users[]{user1, user2, user3});
+                    }
                 }
             }
             if (numMenu == 3) {
-                System.out.println("Создание новой заметки");
-                break;
+                System.out.println("Введите Название заметки");
+                scr.nextLine();
+                String val1 = scr.nextLine();
+                System.out.println("Введите Тело заметки");
+                String val2 = scr.nextLine();
+                System.out.println("Введите Тип заметки");
+                int val3 = scr.nextInt();
+                int i = InsertNote.createNote(notes);
+                //System.out.println(i);
+                notes[i] = InsertNote.insertNotes(val1, val2, val3, notes, i);
+                System.out.println(notes[i].toString()/* + " \n" + i*/);
+
+
             }
             if (numMenu == 4) {
-                System.out.println("Поиск заметки");
-                break;
+                System.out.println("Введите название или тип заметки");
+                search = scr.next();
+                Note[] noteSearch = InsertNote.search(search, notes);
+                //for (int j=0;j<noteSearch.length; j++){
+                    System.out.println(noteSearch.toString());
+                //}
+
             }
             Menus.MyMenu();
             numMenu = scr.nextInt();
