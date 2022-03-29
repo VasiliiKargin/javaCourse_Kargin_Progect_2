@@ -31,16 +31,15 @@ public class InsertNote {
     }
 
     public static Note[] search(String search, Note[] notes) {
-        int i ;
-        Note[] note=new Note[6];
-        for (i = 0; i < notes.length; i++) {
-            if (notes[i]==null) continue;
-            if (search.equals(notes[i].getNameNote()) || search.equals(Integer.toString(notes[i].getTypeNote())))  {
+        Note[] note = new Note[notes.length];
+        for (int i = 0; i < notes.length; i++) {
+            if (notes[i] == null) continue;
+            if (search.equals(notes[i].getNameNote()) || search.equals(Integer.toString(notes[i].getTypeNote()))) {
                 note[i] = notes[i];
-              //  System.out.println(note[i]);
+                //System.out.println(note[i]);
             }
         }
-        return new Note[]{note[i]};
+        return note;
     }
 
 
@@ -49,5 +48,19 @@ public class InsertNote {
         while (notes[i] != null && i++ < notes.length) {
         }
         return i;
+    }
+    public static int searchInt (Note[] noteSearch){
+        int j=0;
+        for (int i = 0; i < noteSearch.length; i++) {
+            if (noteSearch[i] == null) {
+                continue;
+            }
+            j=i;
+        }
+        return j;
+    }
+
+    public static void reName(Note[] noteSearch) {
+
     }
 }

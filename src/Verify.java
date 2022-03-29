@@ -1,3 +1,3 @@
 public interface Verify {
-    void getType();
+    Note getNote();
 }

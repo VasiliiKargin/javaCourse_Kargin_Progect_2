@@ -7,6 +7,8 @@ public class Main {
         boolean flagIn = false;
         String search;
         Note[] notes = new Note[5];
+        Note searchOne;
+        int j=0;
 
         Scanner scr = new Scanner(System.in);
 // Создаем пользователей
@@ -60,10 +62,57 @@ public class Main {
                 System.out.println("Введите название или тип заметки");
                 search = scr.next();
                 Note[] noteSearch = InsertNote.search(search, notes);
-                //for (int j=0;j<noteSearch.length; j++){
-                    System.out.println(noteSearch.toString());
-                //}
 
+                int count=0;
+                for (int i = 0; i < noteSearch.length; i++) {
+                    if (noteSearch[i]==null){
+                        continue;
+                    }
+                    count++;
+                    System.out.println(noteSearch[i]);
+                }
+                if (count>1){
+                    //System.out.println(count);
+                    System.out.println("Попробуйте снова найти заметку, чтобы она была в единственном экземпляре!");
+                    continue;
+                }
+                if (count==0){
+                    System.out.println("Ничего не найдено! Попробуйте снова.");
+                    continue;
+                }
+                else {
+                    j=InsertNote.searchInt(noteSearch);
+                    Menus.MyMenu2();
+                    int numMenu2;
+                    numMenu2=scr.nextInt();
+                    switch (numMenu2){
+                        case 1:
+                            System.out.println(notes[j]);
+                            continue;
+                        case 2:
+                            String update;
+                            update= scr.nextLine();
+                            notes[j].setNameNote(update);
+                            System.out.println(notes[j]);
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            String updateBody;
+                            updateBody= scr.nextLine();
+                            notes[j].setBodyNote(updateBody);
+                            System.out.println(notes[j]);
+                            break;
+                        case 5:
+                            System.out.println(notes[j].getAuthor());
+                            break;
+                        case 6:
+                            notes[j]=null;
+                            System.gc();
+                            System.out.println(notes[j]);
+                            break;
+                    }
+                }
             }
             Menus.MyMenu();
             numMenu = scr.nextInt();

@@ -42,4 +42,7 @@ public abstract class Note {
         this.author = author;
         this.typeNote = typeNote;
     }
+    public String toString(){
+        return "Название - " +getNameNote()+ ", Тело - " + getBodyNote()+ ", Автор - " + getAuthor()+ ", Тип заметки - " + getTypeNote() ;
+    }
 }
