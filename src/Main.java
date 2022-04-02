@@ -3,12 +3,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AnyException {
         boolean flagIn = false;
         String search;
         Note[] notes = new Note[5];
         Note searchOne;
-        int j=0;
+        int j = 0;
+        Users checkAut = null;
 
         Scanner scr = new Scanner(System.in);
 // Создаем пользователей
@@ -25,25 +26,35 @@ public class Main {
         int numMenu = scr.nextInt();
         while (numMenu != 5) {
             if (numMenu == 1) {
-                if (flagIn) {
+                if (checkAut != null) {
                     System.out.println("Вы уже авторизованы!");
                 } else {
-                    while (!flagIn) {
-                        flagIn = LogInClass.authorization(new Users[]{user1, user2, user3});
+                    while (checkAut == null) {
+                        checkAut = LogInClass.authorization(new Users[]{user1, user2, user3});
                     }
                 }
             }
             if (numMenu == 2) {
-                if (!flagIn) {
+                if (checkAut == null) {
                     System.out.println("Вы еще не авторизовывались!");
                 } else {
-                    flagIn = false;
-                    while (!flagIn) {
-                        flagIn = LogInClass.authorization(new Users[]{user1, user2, user3});
+                    checkAut = null;
+                    while (checkAut == null) {
+                        checkAut = LogInClass.authorization(new Users[]{user1, user2, user3});
                     }
                 }
             }
             if (numMenu == 3) {
+                try {
+                    flagIn = LogInClass.checkRole(checkAut,numMenu,0);
+                } catch (AnyException ae) {
+                    System.out.println(ae.getMessage());
+                    flagIn=false;
+                }
+                if (!flagIn) {
+                    numMenu=0;
+                    continue;
+                }
                 System.out.println("Введите Название заметки");
                 scr.nextLine();
                 String val1 = scr.nextLine();
@@ -59,47 +70,93 @@ public class Main {
 
             }
             if (numMenu == 4) {
+                try {
+                    flagIn = LogInClass.checkRole(checkAut,numMenu,0);
+                } catch (AnyException ae) {
+                    System.out.println(ae.getMessage());
+                    flagIn=false;
+                }
+                if (!flagIn) {
+                    numMenu=0;
+                    continue;
+                }
                 System.out.println("Введите название или тип заметки");
                 search = scr.next();
                 Note[] noteSearch = InsertNote.search(search, notes);
 
-                int count=0;
+                int count = 0;
                 for (int i = 0; i < noteSearch.length; i++) {
-                    if (noteSearch[i]==null){
+                    if (noteSearch[i] == null) {
                         continue;
                     }
                     count++;
-                    System.out.println(noteSearch[i]);
+                    //System.out.println(noteSearch[i]);
                 }
-                if (count>1){
-                    //System.out.println(count);
-                    System.out.println("Попробуйте снова найти заметку, чтобы она была в единственном экземпляре!");
+                if (count > 1) {
+
+                    System.out.println("Обнаружено несколько значений по поиску. Необходимо одно значение. Продолжим поиск?(Нажми 1 чтобы продолжить поиск.)");
+                    int next = scr.nextInt();
+                    if (next == 1) {
+                        continue;
+                    }
+                    numMenu = 0;
                     continue;
                 }
-                if (count==0){
+                if (count == 0) {
                     System.out.println("Ничего не найдено! Попробуйте снова.");
                     continue;
-                }
-                else {
-                    j=InsertNote.searchInt(noteSearch);
+                } else {
+                    j = InsertNote.searchInt(noteSearch);
                     Menus.MyMenu2();
                     int numMenu2;
-                    numMenu2=scr.nextInt();
-                    switch (numMenu2){
+                    numMenu2 = scr.nextInt();
+                    switch (numMenu2) {
                         case 1:
                             System.out.println(notes[j]);
-                            continue;
+                            numMenu2=0;
+                            break;
                         case 2:
+                            try {
+                                flagIn = LogInClass.checkRole(checkAut,numMenu,numMenu2);
+                            } catch (AnyException ae) {
+                                System.out.println(ae.getMessage());
+                                flagIn=false;
+                            }
+                            if (!flagIn) {
+                                numMenu=0;
+                                continue;
+                            }
                             String update;
-                            update= scr.nextLine();
+                            update = scr.nextLine();
                             notes[j].setNameNote(update);
                             System.out.println(notes[j]);
                             break;
                         case 3:
+                            try {
+                                flagIn = LogInClass.checkRole(checkAut,numMenu,numMenu2);
+                            } catch (AnyException ae) {
+                                System.out.println(ae.getMessage());
+                                flagIn=false;
+                            }
+                            if (!flagIn) {
+                                numMenu=0;
+                                continue;
+                            }
+                            InsertNote.reWord(j, notes);
                             break;
                         case 4:
+                            try {
+                                flagIn = LogInClass.checkRole(checkAut,numMenu,numMenu2);
+                            } catch (AnyException ae) {
+                                System.out.println(ae.getMessage());
+                                flagIn=false;
+                            }
+                            if (!flagIn) {
+                                numMenu=0;
+                                continue;
+                            }
                             String updateBody;
-                            updateBody= scr.nextLine();
+                            updateBody = scr.nextLine();
                             notes[j].setBodyNote(updateBody);
                             System.out.println(notes[j]);
                             break;
@@ -107,9 +164,8 @@ public class Main {
                             System.out.println(notes[j].getAuthor());
                             break;
                         case 6:
-                            notes[j]=null;
+                            notes[j] = null;
                             System.gc();
-                            System.out.println(notes[j]);
                             break;
                     }
                 }

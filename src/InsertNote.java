@@ -1,3 +1,5 @@
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.util.*;
 
 public class InsertNote {
@@ -49,18 +51,35 @@ public class InsertNote {
         }
         return i;
     }
-    public static int searchInt (Note[] noteSearch){
-        int j=0;
+
+    public static int searchInt(Note[] noteSearch) {
+        int j = 0;
         for (int i = 0; i < noteSearch.length; i++) {
             if (noteSearch[i] == null) {
                 continue;
             }
-            j=i;
+            j = i;
         }
         return j;
     }
 
-    public static void reName(Note[] noteSearch) {
+    public static void reWord(int j, Note[] noteSearch) {
+        String searchWord;
+        String updateWord;
+        Scanner scr = new Scanner(System.in);
 
+        System.out.println(" Тело заметки - "+noteSearch[j].getBodyNote());
+        System.out.println("Введи слово значение которое хочешь заменить");
+        searchWord = scr.next();
+        System.out.println("Введи новое значение");
+        updateWord= scr.next();
+        String[] body = noteSearch[j].getBodyNote().split(" ");
+        for (int i=0; i< body.length;i++){
+            if (searchWord.equals(body[i])) {
+                body[i]=updateWord;
+            }
+        }
+        noteSearch[j].setBodyNote(Arrays.toString(body).replace(",", " ").replaceAll("[\\[\\]]", ""));
+        System.out.println(noteSearch[j]);
     }
 }
