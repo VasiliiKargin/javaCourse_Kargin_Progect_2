@@ -1,4 +1,4 @@
-public abstract class Note {
+public abstract class Note implements NoteInterface{
     private String nameNote;
     private String bodyNote;
     private String author;

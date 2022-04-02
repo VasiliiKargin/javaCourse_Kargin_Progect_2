@@ -1,11 +1,10 @@
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import java.util.Arrays;
+import java.util.Scanner;
 
-import java.util.*;
+public class InsertNote  {
 
-public class InsertNote {
-
-    public static Note insertNotes(String val1, String val2, int val3, Note[] notes, int i) {
-        Note result = null;
+    public static NoteInterface insertNotes(String val1, String val2, int val3, NoteInterface[] notes, int i) {
+        NoteInterface result = null;
         Scanner scr = new Scanner(System.in);
         if (val3 == 1) {
             System.out.println("Введите Автора");
@@ -32,8 +31,8 @@ public class InsertNote {
         return result;
     }
 
-    public static Note[] search(String search, Note[] notes) {
-        Note[] note = new Note[notes.length];
+    public static NoteInterface[] search(String search, NoteInterface[] notes) {
+        NoteInterface[] note = new NoteInterface[notes.length];
         for (int i = 0; i < notes.length; i++) {
             if (notes[i] == null) continue;
             if (search.equals(notes[i].getNameNote()) || search.equals(Integer.toString(notes[i].getTypeNote()))) {
@@ -45,14 +44,14 @@ public class InsertNote {
     }
 
 
-    public static int createNote(Note[] notes) {
+    public static int createNote(NoteInterface[] notes) {
         int i = 0;
         while (notes[i] != null && i++ < notes.length) {
         }
         return i;
     }
 
-    public static int searchInt(Note[] noteSearch) {
+    public static int searchInt(NoteInterface[] noteSearch) {
         int j = 0;
         for (int i = 0; i < noteSearch.length; i++) {
             if (noteSearch[i] == null) {
@@ -63,7 +62,7 @@ public class InsertNote {
         return j;
     }
 
-    public static void reWord(int j, Note[] noteSearch) {
+    public static void reWord(int j, NoteInterface[] noteSearch) {
         String searchWord;
         String updateWord;
         Scanner scr = new Scanner(System.in);
